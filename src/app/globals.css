@@ -10,6 +10,8 @@
   --primary-color: #2D69F0;
   --secondary-color: #FF7C54;
   --bg-icon-color: #144C6B;
+  --bg-main-color: #F7F8FC;
+  --border-color-default: #eeeeee;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -41,4 +43,11 @@ body {
   margin: 0 auto;
   padding-inline-start: 0;
   padding-inline-end: 0;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding-left: 2px;
+    padding-right: 2px;
+  }
 }

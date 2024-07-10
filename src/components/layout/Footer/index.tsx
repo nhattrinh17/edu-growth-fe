@@ -19,24 +19,24 @@ import Link from "next/link";
 
 export function FooterLayout(): JSX.Element {
   return (
-    <footer>
+    <footer className="block">
       <div className="bg-[#3954d5] ">
-        <div className="container flex justify-between py-4">
-          <div className="flex items-center">
+        <div className="container lg:flex justify-between py-4">
+          <div className="flex items-center mb-4 lg:mb-0">
             <Image alt="Email" src={"email.svg"} width={42} height={42} />
             <h2 className="text-xl ml-4 text-white font-bold">
               Đăng Ký Nhận Thông Báo
             </h2>
           </div>
           <form className="flex" onSubmit={(e) => e.preventDefault()}>
-            <div className="flex bg-white h-42px rounded-md mr-4">
-              <div className="border-[1px] px-2 flex rounded-l-md items-center border-[#ced4da] bg-[#e9ecef] ">
+            <div className="flex max-w-[65%] lg:max-w-max bg-white rounded-md mr-4">
+              <div className="border-[1px] py-3 px-2 flex rounded-l-md items-center border-[#ced4da] bg-[#e9ecef] ">
                 <FontAwesomeIcon icon={faEnvelope} />
               </div>
               <input
                 required
                 type="email"
-                className="px-3 rounded-r-md min-w-[300px] outline-none"
+                className="px-3 rounded-r-md lg:min-w-[300px] outline-none"
               />
             </div>
             <button className="text-white rounded-md cursor-pointer px-3 bg-[var(--primary-color)]">
@@ -47,8 +47,8 @@ export function FooterLayout(): JSX.Element {
         </div>
       </div>
       <div className="container text-base">
-        <div className="my-10  grid grid-cols-4 gap-5">
-          <div className="flex flex-col justify-between">
+        <div className="my-10  grid grid-cols-1 lg:grid-cols-4 gap-5">
+          <div className="flex flex-col justify-between text-center lg:text-justify">
             <Image
               alt="Logo"
               src={"/logo.png"}
@@ -87,7 +87,7 @@ export function FooterLayout(): JSX.Element {
               <p>9 am - 5 pm</p>
             </div>
           </div>
-          <div className="h-full flex flex-col">
+          <div className="hidden lg:flex h-full flex-col">
             <div className="h-[52px] flex items-end">
               <h2 className="text-xl font-semibold">Về chúng tôi</h2>
             </div>
@@ -100,7 +100,7 @@ export function FooterLayout(): JSX.Element {
               <li>Liên hệ</li>
             </ul>
           </div>
-          <div className="h-full flex flex-col">
+          <div className="hidden lg:flex h-full flex-col">
             <div className="h-[52px] flex items-end">
               <h2 className="text-xl font-semibold">Về chúng tôi</h2>
             </div>
@@ -113,7 +113,7 @@ export function FooterLayout(): JSX.Element {
               <li>Liên hệ</li>
             </ul>
           </div>
-          <div className="h-full flex flex-col">
+          <div className="hidden lg:flex h-full flex-col">
             <div className="h-[52px] flex items-end">
               <h2 className="text-xl font-semibold">Theo dõi chúng tôi</h2>
             </div>
@@ -138,18 +138,18 @@ export function FooterLayout(): JSX.Element {
               //   style="border:0;"
               className="mt-4"
               loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
+              referrerPolicy="no-referrer-when-downgrade"
             ></iframe>
           </div>
         </div>
       </div>
       <div className="border-t-[1px] border-[#D7D7D7]">
-        <div className="container py-4 flex items-center justify-between">
+        <div className="container py-4 block lg:flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold mb-1">
+            <h1 className="text-xl font-bold mb-1 text-center lg:text-justify">
               Trung Tâm Gia Sư Edu Growth{" "}
             </h1>
-            <div className="flex">
+            <div className="hidden lg:flex">
               <b>Trụ sở chính :</b>
               <p>Đống Đa, Hà Nội, Việt Nam</p>
             </div>
