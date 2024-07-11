@@ -56,7 +56,11 @@ export function HeaderLayout(): JSX.Element {
             <li className="font-bold hover:text-[#2D69F0]">Về Edu Growth</li>
             <li className="font-bold hover:text-[#2D69F0]">Lớp Học</li>
             <li className="font-bold hover:text-[#2D69F0]">Phụ Huynh</li>
-            <li className="font-bold hover:text-[#2D69F0]">Gia sư</li>
+            <li className="font-bold hover:text-[#2D69F0]">
+              <Link className="w-full h-full" href={"/"}>
+                Gia sư
+              </Link>
+            </li>
             <li className="font-bold hover:text-[#2D69F0]">Tin tức</li>
           </ul>
           <button className="ml-6 md cursor-pointer py-3 px-[40px_!important] rounded-lg text-white font-semibold bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] hover:text-[#333] transition-colors">
@@ -95,7 +99,11 @@ export function HeaderLayout(): JSX.Element {
                 </li>
                 <li className="font-bold hover:text-[#2D69F0]">Lớp Học</li>
                 <li className="font-bold hover:text-[#2D69F0]">Phụ Huynh</li>
-                <li className="font-bold hover:text-[#2D69F0]">Gia sư</li>
+                <li className="font-bold hover:text-[#2D69F0]">
+                  <Link className="w-full h-full" href={"/"}>
+                    Gia sư
+                  </Link>
+                </li>
                 <li className="font-bold hover:text-[#2D69F0]">Tin tức</li>
               </ul>
               <button className="ml-6 md cursor-pointer py-3 px-[40px_!important] rounded-lg text-white font-semibold bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] hover:text-[#333] transition-colors">

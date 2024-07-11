@@ -4,10 +4,35 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames/bind";
 import Image from "next/image";
 import styles from "./styles.module.scss";
+import { useAppDispatch } from "@/lib";
+import { useRouter } from "next/navigation";
 
 const cx = classNames.bind(styles);
 
-export function ClassItem({ typeShow }: { typeShow: string }): JSX.Element {
+export function ClassItem({
+  typeShow,
+  className,
+  locationNear,
+  price,
+  studentStatus,
+  subject,
+  timeLearn,
+  numberSessions,
+  id,
+}: {
+  typeShow: string;
+  subject: string;
+  className: string;
+  price: string;
+  locationNear: string;
+  studentStatus: string;
+  timeLearn: string;
+  numberSessions: number;
+  id: number;
+}): JSX.Element {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
   return (
     <div
       className={cx(
@@ -20,6 +45,9 @@ export function ClassItem({ typeShow }: { typeShow: string }): JSX.Element {
       )}
     >
       <div
+        onClick={() => {
+          router.push(`/${id}`);
+        }}
         className={cx("cursor-pointer w-full flex flex-col", {
           "min-w-[33%] lg:max-w-[310px] lg:pr-5": typeShow == "list",
         })}
@@ -53,13 +81,15 @@ export function ClassItem({ typeShow }: { typeShow: string }): JSX.Element {
             "p-2": typeShow == "grid",
           })}
         >
-          <div>
+          <div className="max-w-[60%]">
             <div
               className={cx("flex items-center", {
                 "mt-2": typeShow == "grid",
               })}
             >
-              <h3 className="text-base font-semibold">Toán - 12</h3>
+              <h3 className="text-base font-semibold">
+                {subject} - {className}
+              </h3>
               <FontAwesomeIcon
                 icon={faCircleCheck}
                 className={cx("text-[var(--secondary-color)] ml-2 text-sm")}
@@ -73,7 +103,7 @@ export function ClassItem({ typeShow }: { typeShow: string }): JSX.Element {
                     hidden: typeShow == "grid",
                   })}
                 />
-                <p>Đống Đa, Hà Nội</p>
+                <p className="line-clamp-1">{locationNear}</p>
               </div>
               <div
                 className={cx("ml-3 flex items-center", {
@@ -96,7 +126,7 @@ export function ClassItem({ typeShow }: { typeShow: string }): JSX.Element {
           >
             <h4 className="font-semibold">Học phí:</h4>
             <span className="block">
-              <b>250.000 VNĐ/b</b>
+              <b>{price} VNĐ/b</b>
             </span>
           </div>
         </div>
@@ -132,19 +162,12 @@ export function ClassItem({ typeShow }: { typeShow: string }): JSX.Element {
           </ul>
         </div>
 
-        <p
+        <div
           className={cx("line-clamp-5", {
             hidden: typeShow == "grid",
           })}
-        >
-          On the other hand, we denounce with righteous indignation and dislike
-          men who are so beguiled and demoralized by the charms of pleasure of
-          the moment, so blinded by desire, that they cannot foresee the pain
-          and trouble, On the other hand, we denounce with righteous indignation
-          and dislike men who are so beguiled and demoralized by the charms of
-          pleasure of the moment, so blinded by desire, that they cannot foresee
-          the pain and trouble
-        </p>
+          dangerouslySetInnerHTML={{ __html: studentStatus }}
+        ></div>
 
         <div
           className={cx("p-2 ", {
@@ -154,13 +177,13 @@ export function ClassItem({ typeShow }: { typeShow: string }): JSX.Element {
           <div className="flex justify-between">
             <h4>Học phí :</h4>
             <span className="block text-sm">
-              <b>250.000 VNĐ/b</b>
+              <b>{price} VNĐ/b</b>
             </span>
           </div>
           <div className="flex justify-between">
             <h4>Số buổi dạy :</h4>
             <span className="block text-sm">
-              <b>2 buổi/tuần</b>
+              <b>{numberSessions} buổi/tuần</b>
             </span>
           </div>
           <div className="flex justify-between">

@@ -1,7 +1,8 @@
 "use client";
 
 import { useAppSelector } from "@/lib";
-import { setQueryClass } from "@/lib/redux/app/class.slice";
+import { refreshDataClass, setQueryClass } from "@/lib/redux/app/class.slice";
+import { getAllEduLevel, getAllLocation, getAllSubject } from "@/utils/api";
 import {
   faCheck,
   faPlus,
@@ -15,45 +16,50 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 export function FilterClass(): JSX.Element {
-  const subjects = [
+  const [subjects, setSubject] = useState<
     {
-      id: 1,
-      name: "Subject1",
+      name: string;
+      id: number;
+    }[]
+  >([]);
+  const [eduLevels, setEduLevel] = useState<
+    {
+      name: string;
+      id: number;
+    }[]
+  >([]);
+  const [locations, setLocation] = useState<
+    {
+      district: string;
+      province: string;
+      id: number;
+    }[]
+  >([]);
+  const require = [
+    {
+      name: "Sinh viên",
+      id: 0,
     },
+
     {
-      id: 2,
-      name: "Subject2",
-    },
-    {
+      name: "Giảng viên",
       id: 3,
-      name: "Subject3",
-    },
-    {
-      id: 4,
-      name: "Subject4",
-    },
-    {
-      id: 5,
-      name: "Subject5",
-    },
-    {
-      id: 6,
-      name: "Subject6",
-    },
-    {
-      id: 7,
-      name: "Subject7",
-    },
-    {
-      id: 8,
-      name: "Subject8",
     },
   ];
+
   const [openSubject, setOpenSubject] = useState(true);
   const [showAllSubjects, setShowAllSubjects] = useState(false);
-  const { subjectId, eduLevelId, require, locationId } = useAppSelector(
-    (state) => state.class
-  );
+  const [openEduLevel, setOpenEduLevel] = useState(true);
+  const [showAllEduLevels, setShowAllEduLevels] = useState(false);
+  const [openLocation, setOpenLocation] = useState(true);
+  const [showAllLocations, setShowAllLocations] = useState(false);
+  const [openRequire, setOpenRequire] = useState(true);
+  const {
+    subjectId,
+    eduLevelId,
+    require: requireId,
+    locationId,
+  } = useAppSelector((state) => state.class);
   const dispatch = useDispatch();
   const [showFilter, setShowFilter] = useState(false);
 
@@ -64,6 +70,39 @@ export function FilterClass(): JSX.Element {
     dispatch(
       setQueryClass({
         subjectId: newSubjects,
+      })
+    );
+  };
+
+  const changeFilterEduLevel = (eduLevel: number) => {
+    const newEduLevelId = eduLevelId.includes(eduLevel)
+      ? eduLevelId.filter((i) => i != eduLevel)
+      : [...eduLevelId, eduLevel];
+    dispatch(
+      setQueryClass({
+        eduLevelId: newEduLevelId,
+      })
+    );
+  };
+
+  const changeFilterLocation = (location: number) => {
+    const newLocations = locationId.includes(location)
+      ? locationId.filter((i) => i != location)
+      : [...locationId, location];
+    dispatch(
+      setQueryClass({
+        locationId: newLocations,
+      })
+    );
+  };
+
+  const changeFilterRequire = (require: number) => {
+    const newRequires = requireId.includes(require)
+      ? requireId.filter((i) => i != require)
+      : [...requireId, require];
+    dispatch(
+      setQueryClass({
+        require: newRequires,
       })
     );
   };
@@ -89,6 +128,27 @@ export function FilterClass(): JSX.Element {
     };
   }, []);
 
+  useEffect(() => {
+    async function fetchData() {
+      const [resSubject, resEduLevel, resLocation] = await Promise.all([
+        getAllSubject(1, 100),
+        getAllEduLevel(1, 100),
+        getAllLocation(1, 100),
+      ]);
+
+      if (resSubject.data || resEduLevel.data || resLocation.data) {
+        const dataSubject = resSubject.data?.data;
+        const dataEduLevel = resEduLevel.data?.data;
+        const dataLocation = resLocation.data?.data;
+        setSubject(dataSubject);
+        setEduLevel(dataEduLevel);
+        setLocation(dataLocation);
+      }
+    }
+
+    fetchData();
+  }, []);
+
   return (
     <div className="col-span-1 shadow-[0px_1px_3px_rgb(0 0 0 / 8%)]">
       <div
@@ -104,7 +164,7 @@ export function FilterClass(): JSX.Element {
       </div>
       <section
         className={classNames(
-          "fixed top-0 right-0 h-[100%] z-20 transition-all w-[80%] lg:w-full lg:relative lg:h-fit bg-white border-[1px] border-[#eeeeee] p-4",
+          "fixed top-0 right-0 h-[100%] z-20 lg:z-0 transition-all w-[80%] lg:w-full lg:relative lg:h-fit bg-white border-[1px] border-[#eeeeee] p-4",
           {
             "hidden w-0": showFilter == false,
             "max-lg:animate-slideLeft": showFilter,
@@ -143,7 +203,7 @@ export function FilterClass(): JSX.Element {
             <ul className="transition-all ease-linear duration-300">
               {subjects.map(
                 (subject, index) =>
-                  (index < 5 || showAllSubjects) && (
+                  (index < 4 || showAllSubjects) && (
                     <li
                       key={index}
                       className="flex w-full justify-start items-center"
@@ -187,7 +247,12 @@ export function FilterClass(): JSX.Element {
               )}
               <button
                 onClick={() => setShowAllSubjects((pre) => !pre)}
-                className="w-full py-2 mt-2 bg-[var(--bg-main-color)] text-[#999999] font-semibold hover:text-black transition-colors duration-300"
+                className={classNames(
+                  "w-full py-2 mt-2 bg-[var(--bg-main-color)] text-[#999999] font-semibold hover:text-black transition-colors duration-300",
+                  {
+                    hidden: subjects.length < 5,
+                  }
+                )}
               >
                 {showAllSubjects ? "Ẩn bớt" : "Xem thêm"}
               </button>
@@ -195,31 +260,235 @@ export function FilterClass(): JSX.Element {
           </div>
         </div>
         <div>
-          <div className="flex items-center justify-between py-3 cursor-pointer">
+          <div
+            onClick={() => setOpenEduLevel((pre) => !pre)}
+            className="flex items-center justify-between py-3 cursor-pointer"
+          >
             <h3 className="text-base font-semibold">Cấp học</h3>
             <FontAwesomeIcon icon={faPlus} />
           </div>
+          <div
+            className={classNames(
+              "overflow-hidden transition-all duration-700",
+              {
+                "max-h-0": !openEduLevel,
+                "max-h-[1000px]": openEduLevel,
+              }
+            )}
+          >
+            <h4 className="font-semibold mb-3">Chọn cấp học</h4>
+            <ul className="transition-all ease-linear duration-300">
+              {eduLevels.map(
+                (eduLevel, index) =>
+                  (index < 4 || showAllEduLevels) && (
+                    <li
+                      key={index}
+                      className="flex w-full justify-start items-center"
+                    >
+                      <input
+                        onClick={(e) => {
+                          changeFilterEduLevel(eduLevel.id);
+                        }}
+                        type="checkbox"
+                        className="hidden"
+                        id={`EduLevel-${eduLevel.id}`}
+                      />
+                      <label
+                        htmlFor={`EduLevel-${eduLevel.id}`}
+                        className={classNames(
+                          "flex items-start cursor-pointer justify-center w-5 h-5 border-[1.5px] rounded-[4px] mr-2 border-[#DDDDDD] transition-colors duration-500",
+                          {
+                            "bg-[var(--secondary-color)]": eduLevelId.includes(
+                              eduLevel.id
+                            ),
+                          }
+                        )}
+                      >
+                        <FontAwesomeIcon
+                          icon={faCheck}
+                          color="white"
+                          className={classNames("text-sm relative top-[2px]", {
+                            block: eduLevelId.includes(eduLevel.id),
+                            hidden: !eduLevelId.includes(eduLevel.id),
+                          })}
+                        />
+                      </label>
+                      <label
+                        className="text-base cursor-pointer w-full"
+                        htmlFor={`EduLevel-${eduLevel.id}`}
+                      >
+                        {eduLevel.name}
+                      </label>
+                    </li>
+                  )
+              )}
+              <button
+                onClick={() => setShowAllEduLevels((pre) => !pre)}
+                className={classNames(
+                  "w-full py-2 mt-2 bg-[var(--bg-main-color)] text-[#999999] font-semibold hover:text-black transition-colors duration-300",
+                  {
+                    hidden: eduLevels.length < 5,
+                  }
+                )}
+              >
+                {showAllEduLevels ? "Ẩn bớt" : "Xem thêm"}
+              </button>
+            </ul>
+          </div>
         </div>
-        <div>
+        {/* <div>
           <div className="flex items-center justify-between py-3 cursor-pointer">
             <h3 className="text-base font-semibold">Học phí buổi</h3>
             <FontAwesomeIcon icon={faPlus} />
           </div>
-        </div>
+        </div> */}
         <div>
-          <div className="flex items-center justify-between py-3 cursor-pointer">
-            <h3 className="text-base font-semibold">Yêu cầu giảng viên</h3>
-            <FontAwesomeIcon icon={faPlus} />
-          </div>
-        </div>
-        <div>
-          <div className="flex items-center justify-between py-3 cursor-pointer">
+          <div
+            onClick={() => setOpenLocation((pre) => !pre)}
+            className="flex items-center justify-between py-3 cursor-pointer"
+          >
             <h3 className="text-base font-semibold">Vị trí</h3>
             <FontAwesomeIcon icon={faPlus} />
           </div>
+
+          <div
+            className={classNames(
+              "overflow-hidden transition-all duration-700",
+              {
+                "max-h-0": !openLocation,
+                "max-h-[1000px]": openLocation,
+              }
+            )}
+          >
+            <h4 className="font-semibold mb-3">Chọn vị trí</h4>
+            <ul className="transition-all ease-linear duration-300">
+              {locations.map(
+                (Location, index) =>
+                  (index < 4 || showAllLocations) && (
+                    <li
+                      key={index}
+                      className="flex w-full justify-start items-center"
+                    >
+                      <input
+                        onClick={(e) => {
+                          changeFilterLocation(Location.id);
+                        }}
+                        type="checkbox"
+                        className="hidden"
+                        id={`Location-${Location.id}`}
+                      />
+                      <label
+                        htmlFor={`Location-${Location.id}`}
+                        className={classNames(
+                          "flex items-start cursor-pointer justify-center w-5 h-5 border-[1.5px] rounded-[4px] mr-2 border-[#DDDDDD] transition-colors duration-500",
+                          {
+                            "bg-[var(--secondary-color)]": locationId.includes(
+                              Location.id
+                            ),
+                          }
+                        )}
+                      >
+                        <FontAwesomeIcon
+                          icon={faCheck}
+                          color="white"
+                          className={classNames("text-sm relative top-[2px]", {
+                            block: locationId.includes(Location.id),
+                            hidden: !locationId.includes(Location.id),
+                          })}
+                        />
+                      </label>
+                      <label
+                        className="text-base cursor-pointer w-full"
+                        htmlFor={`Location-${Location.id}`}
+                      >
+                        {Location.province}-{Location.district}
+                      </label>
+                    </li>
+                  )
+              )}
+              <button
+                onClick={() => setShowAllLocations((pre) => !pre)}
+                className={classNames(
+                  "w-full py-2 mt-2 bg-[var(--bg-main-color)] text-[#999999] font-semibold hover:text-black transition-colors duration-300",
+                  {
+                    hidden: locations.length < 5,
+                  }
+                )}
+              >
+                {showAllLocations ? "Ẩn bớt" : "Xem thêm"}
+              </button>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div
+            onClick={() => setOpenRequire((pre) => !pre)}
+            className="flex items-center justify-between py-3 cursor-pointer"
+          >
+            <h3 className="text-base font-semibold">Yêu cầu giảng viên</h3>
+            <FontAwesomeIcon icon={faPlus} />
+          </div>
+
+          <div
+            className={classNames(
+              "overflow-hidden transition-all duration-700",
+              {
+                "max-h-0": !openRequire,
+                "max-h-[1000px]": openRequire,
+              }
+            )}
+          >
+            <h4 className="font-semibold mb-3">Chọn yêu cầu</h4>
+            <ul className="transition-all ease-linear duration-300">
+              {require.map((require, index) => (
+                <li
+                  key={index}
+                  className="flex w-full justify-start items-center"
+                >
+                  <input
+                    onClick={(e) => {
+                      changeFilterRequire(require.id);
+                    }}
+                    type="checkbox"
+                    className="hidden"
+                    id={`require-${require.id}`}
+                  />
+                  <label
+                    htmlFor={`require-${require.id}`}
+                    className={classNames(
+                      "flex items-start cursor-pointer justify-center w-5 h-5 border-[1.5px] rounded-[4px] mr-2 border-[#DDDDDD] transition-colors duration-500",
+                      {
+                        "bg-[var(--secondary-color)]": requireId.includes(
+                          require.id
+                        ),
+                      }
+                    )}
+                  >
+                    <FontAwesomeIcon
+                      icon={faCheck}
+                      color="white"
+                      className={classNames("text-sm relative top-[2px]", {
+                        block: requireId.includes(require.id),
+                        hidden: !requireId.includes(require.id),
+                      })}
+                    />
+                  </label>
+                  <label
+                    className="text-base cursor-pointer w-full"
+                    htmlFor={`require-${require.id}`}
+                  >
+                    {require.name}
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
-        <button className="mt-4 py-3 bg-[var(--primary-color)] w-full text-white rounded-lg font-semibold">
+        <button
+          onClick={() => dispatch(refreshDataClass())}
+          className="mt-4 py-3 bg-[var(--primary-color)] w-full text-white rounded-lg font-semibold"
+        >
           Áp dụng lọc lớp
         </button>
         <button className="mt-4 py-3 bg-[#F7F8FC] text-[#999999] w-full rounded-lg font-semibold">

@@ -7,10 +7,10 @@ export function MainLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main>
+    <>
       <HeaderLayout />
       {children}
       <FooterLayout />
-    </main>
+    </>
   );
 }

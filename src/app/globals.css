@@ -12,6 +12,7 @@
   --bg-icon-color: #144C6B;
   --bg-main-color: #F7F8FC;
   --border-color-default: #eeeeee;
+  --text-color-detail-class: #212529;
 }
 
 @media (prefers-color-scheme: dark) {

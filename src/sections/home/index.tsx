@@ -2,6 +2,9 @@
 
 import { ClassItem } from "@/components/home/ClassItem";
 import { FilterClass } from "@/components/home/FilterClass";
+import { useAppDispatch } from "@/lib";
+import { resetDataClass } from "@/lib/redux/app/class.slice";
+import { useClass } from "@/utils/handleClass";
 import {
   faBorderAll,
   faChevronDown,
@@ -9,18 +12,27 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
-import { useState } from "react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export function HomeSection(): JSX.Element {
   const [openSort, setOpenSort] = useState(false);
   const [typeShow, setTypeShow] = useState("list");
+  const { data, total } = useClass();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetDataClass());
+    };
+  }, []);
 
   return (
     <main className="bg-[var(--bg-main-color)] py-12 lg:py-20">
       <section className="container">
         <div className="flex justify-between">
           <h3 className="text-2xl hidden flex-1 lg:block">
-            46 Kết quả phù hợp
+            {total} Kết quả phù hợp
           </h3>
           <div className="flex flex-1 lg:flex-none">
             <div
@@ -92,10 +104,26 @@ export function HomeSection(): JSX.Element {
               typeShow == "grid",
           })}
         >
-          <ClassItem typeShow={typeShow} />
-          <ClassItem typeShow={typeShow} />
-          <ClassItem typeShow={typeShow} />
-          <ClassItem typeShow={typeShow} />
+          {data.map((item, index) => {
+            return <ClassItem key={index} typeShow={typeShow} {...item} />;
+          })}
+
+          <div
+            className={classNames("object-contain mx-auto", {
+              hidden: data.length > 0,
+            })}
+          >
+            <Image
+              alt="no data"
+              src={"/no-data-6.png"}
+              width={512}
+              height={512}
+              className={classNames("object-contain mx-auto")}
+            />
+            <h3 className="text-center text-xl font-semibold text-red-400">
+              Hiện tại chưa có lớp theo yêu cầu !!!
+            </h3>
+          </div>
         </div>
       </div>
     </main>

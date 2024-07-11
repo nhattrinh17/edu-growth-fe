@@ -6,15 +6,18 @@ interface ClassItem {
   subjectId: number;
   subject: {
     name: string;
+    id: number;
   };
   eduLevelId: number;
   eduLevel: {
     name: string;
+    id: number;
   };
   class: string;
   locationId: number;
   location: {
     name: string;
+    id: number;
   };
   locationNear: string;
   locationReal: string;
@@ -46,7 +49,7 @@ interface ClassSliceDto {
   limit: number;
   search: string;
   total: number;
-  classByIdEdit?: ClassItem;
+  classById?: ClassItem;
 }
 
 const ClassSlice = createSlice({
@@ -110,14 +113,14 @@ const ClassSlice = createSlice({
       state.eduLevelId = [];
       state.require = [];
       state.locationId = [];
-      state.classByIdEdit = undefined;
+      state.classById = undefined;
     },
     refreshDataClass: (state) => {
       state.isFetchData = true;
       state.page = 1;
     },
     setDataClassById(state, action: { payload: { data: any } }) {
-      state.classByIdEdit = action.payload.data;
+      state.classById = action.payload.data;
     },
   },
 });
