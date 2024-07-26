@@ -1,0 +1,17 @@
+.nav__item {
+  &::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: var(--primary-color);
+    width: 0%;
+  }
+
+  &:hover::after {
+    width: 100%;
+    transition: width linear 0.3s;
+  }
+}

@@ -82,6 +82,7 @@ export const useClass = (waitFetchData = false) => {
           timeLearn: i.timeLearn,
           studentStatus: i.studentStatus,
           locationNear: i.locationNear,
+          image: i.image,
         };
       }) || [],
     total,

@@ -19,6 +19,7 @@ export function ClassItem({
   timeLearn,
   numberSessions,
   id,
+  image,
 }: {
   typeShow: string;
   subject: string;
@@ -29,6 +30,7 @@ export function ClassItem({
   timeLearn: string;
   numberSessions: number;
   id: number;
+  image: string;
 }): JSX.Element {
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -52,15 +54,17 @@ export function ClassItem({
           "min-w-[33%] lg:max-w-[310px] lg:pr-5": typeShow == "list",
         })}
       >
-        <Image
-          alt="Image"
-          src={
-            "https://demos.wp-guppy.com/tuturn/wp-content/uploads/2022/03/gallery-10-580x452.jpg"
-          }
-          width={290}
-          height={226}
-          className="object-fill w-full flex-1 rounded-t-sm"
-        />
+        <figure className="w-full pt-[66.7%] relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 bottom-0 shadow-sm">
+            <Image
+              alt="Image"
+              src={image || "/logo.png"}
+              width={290}
+              height={226}
+              className="w-full h-full object-cover rounded-t-sm"
+            />
+          </div>
+        </figure>
         <button
           className={cx(
             "wrapper__view",

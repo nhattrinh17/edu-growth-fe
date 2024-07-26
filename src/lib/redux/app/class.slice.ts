@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface ClassItem {
   id: number;
+  image: string;
   statusClass: number;
   subjectId: number;
   subject: {
