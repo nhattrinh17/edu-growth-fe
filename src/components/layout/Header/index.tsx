@@ -1,6 +1,6 @@
 "use client";
 
-import { faBars, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faSearch, faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames/bind";
 import Image from "next/image";
@@ -138,49 +138,56 @@ export function HeaderLayout(): JSX.Element {
 
           {showNav ? (
             <div
+              onClick={() => setShowNav(false)}
               ref={navMobileRef}
-              className="fixed animate-slideRight top-0 left-0 h-full w-[60%] bg-white z-50"
+              className="fixed top-0 right-0 bottom-0 left-0 bg-[#000000b3] z-50"
             >
-              <Link
-                href={"/"}
-                className="p-3 flex justify-center h-[var(--height-header)]"
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="bg-white animate-slideLeft h-full w-[90%] ml-auto"
               >
-                <Image
-                  alt="Logo"
-                  src={"/logo.png"}
-                  width={160}
-                  height={50}
-                  className="w-[70%] object-contain"
-                />
-              </Link>
-              <ul className="[&>li]:transition-colors [&>li]:cursor-pointer [&>li]:text-base [&>li]:px-5 [&>li]:py-3 ">
-                <li className="hover:text-[var(--primary-color)]">
-                  Về Edu Growth
-                </li>
-                <li className="hover:text-[var(--primary-color)]">
-                  <Link className="w-full h-full" href={"/"}>
-                    Lớp Học
+                <div className="h-[var(--height-header)] flex items-center justify-between px-5 py-3">
+                  <Link href={"/"} className="p-2 h-full flex items-center">
+                    <Image
+                      alt="Logo"
+                      src={"/logo.png"}
+                      width={160}
+                      height={50}
+                      className="object-contain"
+                    />
                   </Link>
-                </li>
-                <li className="hover:text-[var(--primary-color)]">
-                  <Link className="w-full h-full" href={"/"}>
-                    Phụ Huynh
-                  </Link>
-                </li>
-                <li className="hover:text-[var(--primary-color)]">
-                  <Link className="w-full h-full" href={"/"}>
-                    Gia sư
-                  </Link>
-                </li>
-                <li className="hover:text-[var(--primary-color)]">
-                  <Link className="w-full h-full" href={"/"}>
-                    Tin tức
-                  </Link>
-                </li>
-              </ul>
-              <button className="ml-6 md cursor-pointer py-3 px-[40px_!important] rounded-lg text-white font-semibold bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] hover:text-[#333] transition-colors">
-                Liên hệ
-              </button>
+                  <FontAwesomeIcon
+                    onClick={() => setShowNav(false)}
+                    icon={faX}
+                    className="text-3xl"
+                  />
+                </div>
+                <ul className="[&>li]:transition-colors [&>li]:cursor-pointer [&>li]:text-base [&>li]:px-5 [&>li]:py-6 [&>li]:text-white [&>li]:border-b-[1px] [&>li]:border-[darkgrey] bg-[var(--bg-nav-mobile)] h-full px-4">
+                  <li className="hover:text-[var(--primary-color)]">
+                    Về Edu Growth
+                  </li>
+                  <li className="hover:text-[var(--primary-color)]">
+                    <Link className="w-full h-full" href={"/"}>
+                      Lớp Học
+                    </Link>
+                  </li>
+                  <li className="hover:text-[var(--primary-color)]">
+                    <Link className="w-full h-full" href={"/"}>
+                      Phụ Huynh
+                    </Link>
+                  </li>
+                  <li className="hover:text-[var(--primary-color)]">
+                    <Link className="w-full h-full" href={"/"}>
+                      Gia sư
+                    </Link>
+                  </li>
+                  <li className="hover:text-[var(--primary-color)]">
+                    <Link className="w-full h-full" href={"/"}>
+                      Tin tức
+                    </Link>
+                  </li>
+                </ul>
+              </div>
             </div>
           ) : (
             <></>

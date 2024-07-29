@@ -14,6 +14,8 @@
   --bg-main-color: #F7F8FC;
   --border-color-default: #eeeeee;
   --text-color-detail-class: #212529;
+  --text-footer-color: #696969;
+  --bg-nav-mobile: #3f3a64
 }
 
 @media (prefers-color-scheme: dark) {
@@ -59,6 +61,11 @@ body {
       rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
   font-family: Gilroy;
   transition: all .25s linear;
+}
+
+::selection {
+  color: #fff;
+  background-color: #20AD96;
 }
 
 @layer utilities {
