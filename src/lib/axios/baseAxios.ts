@@ -1,18 +1,18 @@
-import { messageResponse } from '@/constants';
-import { addFlashMessageFailed } from '@/uiCore/FlashMessage/HandleFlashMessage';
-import axios, { AxiosInstance } from 'axios';
+import { messageResponse } from "@/constants";
+// import { addFlashMessageFailed } from '@/uiCore/FlashMessage/HandleFlashMessage';
+import axios, { AxiosInstance } from "axios";
 
 export class BaseAxios {
   private request: AxiosInstance;
 
   constructor(urlBase?: string) {
-    const accessToken = sessionStorage.getItem('access_token');
+    const accessToken = sessionStorage.getItem("access_token");
     this.request = axios.create({
       baseURL: urlBase || process.env.API_URL,
       headers: {
-        'Content-type': 'application/json',
+        "Content-type": "application/json",
         Authorization: `Bearer ${accessToken}`,
-        'Access-Control-Allow-Origin': '*',
+        "Access-Control-Allow-Origin": "*",
       },
       timeout: 10000,
     });
@@ -24,7 +24,7 @@ export class BaseAxios {
       return response.data;
     } catch (error: any) {
       const typeError: string = error?.response?.data?.exception?.message;
-      addFlashMessageFailed(messageResponse[typeError] || 'Có lỗi xảy ra vui lòng thử lại sau');
+      // addFlashMessageFailed(messageResponse[typeError] || 'Có lỗi xảy ra vui lòng thử lại sau');
       return false;
     }
   }
@@ -35,7 +35,7 @@ export class BaseAxios {
       return response.data;
     } catch (error: any) {
       const typeError: string = error?.response?.data?.exception?.message;
-      addFlashMessageFailed(messageResponse[typeError] || 'Có lỗi xảy ra vui lòng thử lại sau');
+      // addFlashMessageFailed(messageResponse[typeError] || 'Có lỗi xảy ra vui lòng thử lại sau');
 
       return false;
     }
@@ -47,7 +47,7 @@ export class BaseAxios {
       return response.data;
     } catch (error: any) {
       const typeError: string = error?.response?.data?.exception?.message;
-      addFlashMessageFailed(messageResponse[typeError] || 'Có lỗi xảy ra vui lòng thử lại sau');
+      // addFlashMessageFailed(messageResponse[typeError] || 'Có lỗi xảy ra vui lòng thử lại sau');
 
       return false;
     }
@@ -59,7 +59,7 @@ export class BaseAxios {
       return response.data;
     } catch (error: any) {
       const typeError: string = error?.response?.data?.exception?.message;
-      addFlashMessageFailed(messageResponse[typeError] || 'Có lỗi xảy ra vui lòng thử lại sau');
+      // addFlashMessageFailed(messageResponse[typeError] || 'Có lỗi xảy ra vui lòng thử lại sau');
 
       return false;
     }
